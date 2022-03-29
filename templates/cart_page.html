@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load manual_tag %}
+{% load currency %}
+
+
+<div class="container border rounded p-3">
+    <div class="display-4 border p-3 m-1 alert-secondary rounded-1 shadow m-2">
+        YOUR CART
+    </div> 
+    {% if products %}
+    <table class="table table-light table-striped ">
+    <thead>
+        <tr>
+            <td>Sn.</td>
+            <td>Image</td>
+            <td>Product</td>
+            <td>Price</td> 
+            <td>Quantiti</td>
+            <td>Total</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td><img src="{{product.img_img.url}}" alt="" class="rounded rounded-circle" style="height: 50px; width: auto; "></td>
+            <td>{{product.img_title}}</td>
+            <td>{{product.price | currency}}</td>
+            <td>{{ product.id|cart_quantity:request.session.cart }}</td>
+            <td>{{ product|total:request.session.cart|currency }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th class="text-end" colspan="5">Grand Total</th>
+            <th >{{products|grand_total:request.session.cart|currency}}</th>
+        </tr>
+    </tfoot>
+</table>
+
+    <div class="m-3 p-3 border-0" style=" justify-content: end; display: flex;">
+  <a href="{% url 'check_out' %}" class="btn btn-outline-primary " >Check Out</a>
+
+</div>
+  {% else %}
+     <div class="display-6 mt-lg-5 mt-3">
+         {{massage}}
+     </div> 
+     <div style="align-items: flex-end; justify-content: end; display: flex;">
+     <span class="text-black-50" >Go to &nbsp; </span>  
+     <a href="{% url 'homePage' %}" class="text-decoration-none">Products Page</a>
+    </div>
+    {% endif %}
+</div>
+
+
+
+
+  
+  
+
+
+
+
+
+{% endblock %}
